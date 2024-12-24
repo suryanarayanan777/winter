@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+     <!--for bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+
+    <!--for jquery-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+   <style>
+    #head-row{
+        background-color: #686868;
+       color: #fff;
+       font-size: 12px;
+    }
+    #student-tbl-body{
+        font-size: 12px;
+        color:red;
+    }
+   </style>
+
+</head>
+<body>
+    
+    <div class="container">
+                 
+        <table class="table table-striped table-bordered">
+          <thead>
+
+            <tr id="head-row">
+              <th>Admission Number</th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Gender</th>
+              <th>Age</th>
+              <th>Address</th>
+              <th>Email</th>
+              <th>Mobile</th>
+            </tr>
+
+          </thead>
+          <tbody id="student-tbl-body"> 
+           
+             
+          </tbody>
+        </table>
+
+      </div>
+
+      <!--- here we write the js code -->
+      <script>
+        
+    
+        const students = [
+            {
+                admissionNumber: "CS1001",
+                name: "Arun",
+                department: "Computer Science",
+                gender: "Male",
+                age: 20,
+                address: "Mundakkal",
+                email: "arun@gmail.com",
+                mobile: 9090909090
+            },
+            {
+                admissionNumber: "ME1002",
+                name: "Kiran",
+                department: "Mechanical Engineering",
+                gender: "Male",
+                age: 22,
+                address: "kalthil",
+                email: "kiran@gmail.com",
+                mobile:8080800880
+            },
+            {
+                admissionNumber: "E1005",
+                name: "Devika",
+                department: "Electrical Engineering",
+                gender: "Female",
+                age: 21,
+                address: "Thyparambil",
+                email: "devika@gmail.com",
+                mobile: 7070770707
+            },
+            {
+                admissionNumber: "E1006",
+                name: "Arjun",
+                department: "Electrical Engineering",
+                gender: "male",
+                age: 21,
+                address: "Thyparambil",
+                email: "arjun@gmail.com",
+                mobile: 6060606060
+            },
+            {
+                admissionNumber: "E1007",
+                name: "Manu",
+                department: "Electrical Engineering",
+                gender: "male",
+                age: 21,
+                address: "Thyparambil",
+                email: "manu@gmail.com",
+                mobile: 5050505050
+            }
+            
+     ];
+
+     for(i=0;i<students.length;i++){
+       
+        var tr = `<tr>
+              <td>${students[i].admissionNumber}</td>
+              <td>${students[i].name}</td>
+              <td>${students[i].department}</td>
+              <td>${students[i].gender}</td>
+              <td>${students[i].age}</td>
+              <td>${students[i].address}</td>
+              <td>${students[i].email}</td>
+              <td>${students[i].mobile}</td>
+             </tr>`
+
+             // append function used to insert this string into table body
+             $("#student-tbl-body").append(tr)
+     }
+
+
+      </script>
+
+</body>
+</html>
