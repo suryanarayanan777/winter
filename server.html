@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        #top-header {
+            width: 100%;
+            height: 50px;
+            background-color: #2C3E50; 
+            padding-left: 20px;
+            padding-top: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ECF0F1; 
+            border-bottom: solid 2px #2980B9; 
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
+        }
+
+        #header-row {
+            background-color: #2980B9; 
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        #student-table-body {
+            font-size: 13px;
+        }
+
+        .edit-btn, .delete-btn {
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #search-input-holder {
+            width: 300px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        #add-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: solid 3px #16A085; 
+            background-color: #16A085; 
+            color: white;
+            font-size: 22px;
+            text-align: center;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 10px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #add-btn:hover {
+            background-color: #1ABC9C;
+            border-color: #1ABC9C;
+            transform: scale(1.1);
+        }
+
+        .edit-btn i, .delete-btn i {
+            color: #F39C12;
+        }
+
+        .edit-btn i:hover, .delete-btn i:hover {
+            color: #E67E22; 
+        }
+
+        .btn-blue {
+            background-color: #2980B9; 
+            border-color: #2980B9;
+        }
+
+        .btn-blue:hover {
+            background-color: #3498DB; 
+            border-color: #3498DB;
+        }
+
+        .btn-red {
+            background-color: #E74C3C;
+            border-color: #E74C3C;
+        }
+
+        .btn-red:hover {
+            background-color: #C0392B;
+            border-color: #C0392B;
+        }
+
+        .form-group label {
+            font-size: 15px;
+            color: #7F8C8D;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #BDC3C7;
+            padding: 12px;
+        }
+
+        .form-control:focus {
+            border-color: #2980B9; 
+            box-shadow: 0 0 8px rgba(41, 128, 185, 0.4);
+        }
+
+        /* Table Styles */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #BDC3C7;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ECF0F1;
+        }
+
+        tr:hover {
+            background-color: #F7F9F9;
+        }
+
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="top-header">
+        <div>Student Management System</div>
+    </div> 
+
+    <div class="container">
+        
+        <div id="search-input-holder">
+            <input id="search-input" type="text" placeholder="Search Student" class="form-control">
+        </div>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr id="header-row">
+                    <th>Admission Number</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="student-table-body">
+                <!-- Student data insrtion -->
+            </tbody>
+        </table>
+
+        <div id="add-btn-holder">
+            <button id="add-btn" type="button" class="btn btn-primary">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const students = [
+            { admissionNumber: "CS1001", name: "Mangalassery Neelakandan", department: "Computer Science", gender: "Male", age: 20, address: "Mangalassery" },
+            { admissionNumber: "ME1002", name: "Arakkal Madavanunni", department: "Mechanical Engineering", gender: "Male", age: 22, address: "Arakkal" },
+            { admissionNumber: "E1005", name: "Balaraman", department: "Electrical Engineering", gender: "Female", age: 21, address: "Thambaakulam" },
+            { admissionNumber: "E1006", name: "Ashokan", department: "Electrical Engineering", gender: "Male", age: 21, address: "Thyparambil" },
+            { admissionNumber: "E1007", name: "Jopan", department: "Electrical Engineering", gender: "Male", age: 21, address: "Thoppil" }
+        ];
+
+       // update list
+        const renderStudents = () => {
+            $("#student-table-body").empty();
+            students.forEach((student, index) => {
+                const tr = `
+                    <tr data-index="${index}">
+                        <td>${student.admissionNumber}</td>
+                        <td>${student.name}</td>
+                        <td>${student.department}</td>
+                        <td>${student.gender}</td>
+                        <td>${student.age}</td>
+                        <td>${student.address}</td>
+                        <td><div class="edit-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div></td>
+                        <td><div class="delete-btn"><i class="fa fa-trash-o" aria-hidden="true"></i></div></td>
+                    </tr>`;
+                $("#student-table-body").append(tr);
+            });
+        }
+
+        // Search
+        $("#search-input").on("keyup change", () => {
+            const searchQuery = $("#search-input").val().toLowerCase();
+            $("#student-table-body tr").each((index, row) => {
+                const name = $(row).find("td:eq(1)").text().toLowerCase();
+                if (!searchQuery || name.includes(searchQuery)) {
+                    $(row).show();
+                } else {
+                    $(row).hide();
+                }
+            });
+        });
+
+        // Edit student details
+        const editStudent = (student, tr) => {
+            $.confirm({
+                title: 'Update Student',
+                content: `
+                    <div class="form-group">
+                        <label>Admission Number</label>
+                        <input value="${student.admissionNumber}" id="admission-number-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input value="${student.name}" id="name-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input value="${student.department}" id="department-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <input value="${student.gender}" id="gender-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input value="${student.age}" id="age-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input value="${student.address}" id="address-input" class="form-control"/>
+                    </div>`,
+                buttons: {
+                    update: {
+                        text: 'Update',
+                        btnClass: 'btn-blue',
+                        action: () => {
+                            student.admissionNumber = $('#admission-number-input').val();
+                            student.name = $('#name-input').val();
+                            student.department = $('#department-input').val();
+                            student.gender = $('#gender-input').val();
+                            student.age = $('#age-input').val();
+                            student.address = $('#address-input').val();
+                            renderStudents();
+                        }
+                    },
+                    cancel: function () {}
+                }
+            });
+        }
+
+        // Delete student
+        const deleteStudent = (tr, index) => {
+            $.confirm({
+                title: 'Are you Sure?',
+                type: 'red',
+                content: 'Do you really want to delete this student?',
+                buttons: {
+                    yes: {
+                        text: 'Yes',
+                        btnClass: 'btn-red',
+                        action: () => {
+                            students.splice(index, 1);
+                            tr.remove(); 
+                        }
+                    },
+                    no: function () {}
+                }
+            });
+        };
+
+        // Add new student
+        const addStudent = () => {
+            $.confirm({
+                title: 'Add New Student',
+                content: `
+                    <div class="form-group">
+                        <label>Admission Number</label>
+                        <input id="admission-number-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input id="name-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input id="department-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <input id="gender-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input id="age-input" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input id="address-input" class="form-control"/>
+                    </div>`,
+                buttons: {
+                    add: {
+                        text: 'Add',
+                        btnClass: 'btn-blue',
+                        action: () => {
+                            const newStudent = {
+                                admissionNumber: $('#admission-number-input').val(),
+                                name: $('#name-input').val(),
+                                department: $('#department-input').val(),
+                                gender: $('#gender-input').val(),
+                                age: $('#age-input').val(),
+                                address: $('#address-input').val()
+                            };
+                            students.push(newStudent);
+                            renderStudents();
+                        }
+                    },
+                    cancel: function () {}
+                }
+            });
+        };
+
+        // functions for add and edit students
+        $(document).on("click", ".edit-btn", function () {
+            const tr = $(this).closest('tr');
+            const index = tr.data('index');
+            const student = students[index];
+            editStudent(student, tr);
+        });
+
+        $(document).on("click", ".delete-btn", function () {
+            const tr = $(this).closest('tr');
+            const index = tr.data('index');
+            deleteStudent(tr, index);
+        });
+
+        // Event listener for adding a new student
+        $("#add-btn").on("click", addStudent);
+
+        // updating students
+        renderStudents();
+    </script>
+
+</body>
+</html>
